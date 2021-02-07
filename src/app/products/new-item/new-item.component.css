@@ -1,0 +1,16 @@
+.newItemForm{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    min-width: 400px;
+}
+
+.newItem-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+}
+.imgPrev{
+    max-width: 300px;
+}

@@ -1,0 +1,12 @@
+<mat-drawer-container class="drawer-container">
+    <mat-drawer mode="side" opened>Catagories
+        
+        <li class="cat" *ngFor="let cat of loadedCat"><a href="" class="catLink">{{ cat}}</a></li>
+    </mat-drawer>
+    <mat-drawer-content class="tileContainer">
+        <app-item-tile *ngFor="let item of loadedItems"
+        [item] = "item"></app-item-tile>
+
+    </mat-drawer-content>
+  </mat-drawer-container>
+  

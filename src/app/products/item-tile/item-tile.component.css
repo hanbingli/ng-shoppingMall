@@ -1,0 +1,9 @@
+
+.item-tile {
+    max-width: 200px;
+  }
+
+.tile-action{
+    display: flex;
+    justify-content: space-between;
+}

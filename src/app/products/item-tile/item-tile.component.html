@@ -1,0 +1,13 @@
+<a href="#" class="tileLink">
+<mat-card class="item-tile">
+    <img mat-card-image [src]="item.imagePath" [alt]="item.name">
+      <mat-card-title>{{ item.name }}</mat-card-title>
+    
+    <mat-card-actions class="tile-action" >
+      <span >{{item.price}}</span>
+      <button mat-raised-button color="primary">
+        Add
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</a>

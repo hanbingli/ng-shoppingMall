@@ -1,0 +1,11 @@
+
+.mat-toolbar{
+  display: flex;
+  justify-content: space-between;
+}
+.header-function-buttons{
+    min-width: 250px;
+    display: flex;
+  justify-content: space-between;
+
+}
