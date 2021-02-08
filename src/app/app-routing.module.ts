@@ -4,15 +4,18 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { SidebarComponent } from './main/sidebar/sidebar.component'
 import { NewItemComponent } from './products/new-item/new-item.component';
+import { AuthComponent } from './auth/auth.component'
 
 
 const routes: Routes = [
   { path: '', redirectTo:'items', pathMatch: 'full'  },
+  { path: 'auth', component: AuthComponent },
   { path: 'items', component: SidebarComponent, 
     children: [
     ]
 },
-{ path: 'items/new', component: NewItemComponent }
+{ path: 'items/new', component: NewItemComponent },
+
 
 
 ];

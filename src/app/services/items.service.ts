@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
+
 import { Item } from '../models/item.model';
-import { Subject } from 'rxjs'
+
+import { AuthService } from '../auth/auth.service';
+
 
 
 @Injectable({
@@ -8,7 +14,10 @@ import { Subject } from 'rxjs'
 })
 export class ItemsService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
   catagories: string[]=[
     'food', 
@@ -17,65 +26,73 @@ export class ItemsService {
     'health',
 
   ]
-  items: Item[] = [
-    {
-      name: 'banana',
-      catagory: 'food', 
-      description: 'banana', 
-      imagePath: 'https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg', 
-      price: 1.99
-      
-    },
-    {
-      name: 'banana',
-      catagory: 'food', 
-      description: 'banana', 
-      imagePath: 'https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg', 
-      price: 1.99
-      
-    },
-    {
-      name: 'banana',
-      catagory: 'food', 
-      description: 'banana', 
-      imagePath: 'https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg', 
-      price: 1.99
-      
-    },
-    {
-      name: 'banana',
-      catagory: 'food', 
-      description: 'banana', 
-      imagePath: 'https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg', 
-      price: 1.99
-      
-    },
-    {
-      name: 'banana',
-      catagory: 'food', 
-      description: 'banana', 
-      imagePath: 'https://cdn.mos.cms.futurecdn.net/42E9as7NaTaAi4A6JcuFwG-1200-80.jpg', 
-      price: 1.99
-      
-    },
-  ];
 
-  itemsState= new Subject< Item[]>();
+  newItem: Item;
 
-  
+  private cart$$: Item[] = [];
+  public cart$: Subject<Item[]> = new Subject<Item[]>();
+
+  private itemCount$$: number = 0;
+  public itemCount$: Subject<number> = new Subject<number>();
+
+
   getCat(){
-    return this.catagories.slice()
+    return this.catagories
+    // return this.http
+        // .get<Item[]>(
+        //   'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
+          
+        // )
+        // .pipe(
+        //   map(items => {
+        //     return items.map(item=> item.catagory            
+        //     );
+        //   }),
+       
   }
    
   getItems(){
-    return this.items.slice()
+    return this.http
+    .get<Item[]>(
+      'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
+      
+    )
+
+   
   }
 
   addItem(item:Item){
-    this.items.push(item);
-    this.itemsState.next(this.items.slice())
+    
+    this.newItem=item;
+    this.http
+    .post(
+        'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json', 
+        this.newItem)
+    .subscribe(response =>{
+    console.log(response)
+})
 
   }
+
+  addToCart(item:Item){
+    console.log(this.cart$$)
+    this.cart$$.push(item);
+    this.cart$.next(this.cart$$.slice())
+
+    // this.itemCount$$= this.cart$$.length
+    // this.itemCount$.next(this.itemCount$$)
+
+    console.log(this.itemCount$$)
+  }
+
+  getItemCount(){
+    this.itemCount$$= this.cart$$.length
+    this.itemCount$.next(this.itemCount$$)
+
+
+  }
+
+
 
 
 }

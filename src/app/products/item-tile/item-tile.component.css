@@ -1,9 +1,16 @@
 
 .item-tile {
-    max-width: 200px;
+    margin: 2px;
+    width: 220px;
+    height: 250px;
   }
 
 .tile-action{
     display: flex;
     justify-content: space-between;
+}
+
+.item-tile-img{
+    width: 195px;
+    height: 180px;
 }

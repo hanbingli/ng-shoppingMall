@@ -1,13 +1,13 @@
-<a href="#" class="tileLink">
+<!-- <a href="#" class="tileLink"> -->
 <mat-card class="item-tile">
-    <img mat-card-image [src]="item.imagePath" [alt]="item.name">
+    <img class="item-tile-img" mat-card-image [src]="item.imagePath" [alt]="item.name">
       <mat-card-title>{{ item.name }}</mat-card-title>
     
     <mat-card-actions class="tile-action" >
       <span >{{item.price}}</span>
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" type='button' (click)="onAddToCart(item)">
         Add
       </button>
-    </mat-card-actions>
+    </mat-card-actions>
   </mat-card>
-</a>
+<!-- </a> -->

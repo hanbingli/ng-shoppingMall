@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ItemsService } from '../../services/items.service';
 import { Item } from 'src/app/models/item.model';
 
@@ -8,6 +10,7 @@ import { Item } from 'src/app/models/item.model';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  private itemsSub: Subscription;
 
   loadedItems: Item[];
   loadedCat: string[];
@@ -16,9 +19,17 @@ export class SidebarComponent implements OnInit {
     private itemsService: ItemsService,
     ) { }
 
-  ngOnInit(): void {
-    this.loadedItems= this.itemsService.getItems()
+  ngOnInit(){
+    // this.loadedItems= this.itemsService.getItems()
+    
     this.loadedCat = this.itemsService.getCat()
+
+
+    this.itemsSub = this.itemsService.getItems().subscribe(items => {
+     
+      this.loadedItems=items
+
+    })
   }
 
 

@@ -10,6 +10,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSidenavModule} from '@angular/material/sidenav';
 
 import { MatSelectModule } from '@angular/material/select';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 
@@ -25,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
         MatGridListModule,
         MatSidenavModule,
         MatSelectModule,
+        MatBadgeModule,
 
     ],
         
@@ -37,7 +39,9 @@ import { MatSelectModule } from '@angular/material/select';
         MatFormFieldModule,
         MatGridListModule,
         MatSidenavModule,
-        MatSelectModule
+        MatSelectModule,
+        MatBadgeModule,
+        
 
     ]
 })

@@ -1,22 +1,37 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
    
-        <a href="#" class="mat-button"> 
-            <span>Shopping Mall </span>
+        <a href="#" class="titleLink"> 
+            <div class="titleContainer">
+                <img src="https://img.icons8.com/wired/64/ffffff/bts-army.png"/>
+                 <h1 class="title">Shopping Mall </h1>
+            </div>
+            
         </a>
         <span class="header-spacer"></span>
 
         <div class="searchbarContainer">
-            <form class="example-form">
-                <mat-form-field class="example-full-width">
-                  <input matInput #message maxlength="256" placeholder="Search">
+            <form class="searchForm">
+                <mat-form-field class="searchfield">
+                    <span matPrefix><i class="fas fa-search"> </i></span>
+                  <input 
+                  matInput 
+                  #searchInput 
+                  minlength="300" 
+                  placeholder="Search"
+               
+                  >
+                  <!-- (keydown.enter)="onSearch($event.target.value)" -->
                 </mat-form-field>
               </form>
         </div>
         <span class="header-spacer"></span>
         <div class="header-function-buttons">
-            <button mat-stroked-button color="primary" routerLinkActive="active">Account/Login</button>
-            <button mat-stroked-button routerLinkActive="active">Cart</button>
+            <button mat-stroked-button routerLink="/auth" routerLinkActive="active" *ngIf="!isAuthenticated">Login</button>
+            <button mat-stroked-button routerLinkActive="active">
+                <span [matBadge]="cartItemCount"   matBadgeColor="accent" matBadgeOverlap="false">Cart</span>
+            </button>
             <!-- <button mat-stroked-button routerLink="/items/new" routerLinkActive="active">Add item</button> -->
+            <button mat-stroked-button routerLink="/auth" routerLinkActive="active"  *ngIf="isAuthenticated">Logout</button>
             <button mat-stroked-button (click)="onNewItem()">Add item</button>
 
     </div>

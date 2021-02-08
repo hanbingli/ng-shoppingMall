@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormsModule, FormGroup, FormControl, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 
 
-import { Item } from '../../models/item.model'
 import { ItemsService } from '../../services/items.service'
 
 

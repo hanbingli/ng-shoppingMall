@@ -1,0 +1,10 @@
+.auth-form{
+
+   display: flex;
+   flex-direction: column;
+   width: fit-content;
+   min-width: 800px;
+   min-height: 800px;
+
+
+}

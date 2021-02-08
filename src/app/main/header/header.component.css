@@ -1,11 +1,27 @@
-
 .mat-toolbar{
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+.titleContainer{
+    display: flex;
+    justify-content: left;
 }
+
+.title{
+    padding-top: 12px;
+    color: white;
+    text-decoration:none;
+
+}
+
 .header-function-buttons{
     min-width: 250px;
     display: flex;
   justify-content: space-between;
 
+}
+.searchfield{
+    min-width: 350px;
 }

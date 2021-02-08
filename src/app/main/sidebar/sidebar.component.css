@@ -5,9 +5,28 @@
 }
 
 mat-sidenav {
-    width: 300px;
+    width:auto;
   }
 
-  .tileContainer{
+.sidebar{
+    display: flex;
+   flex-direction: column;
+   min-width: 220px;
+}
+
+.cat-buttonContainer{
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+
+
+
+.tileContainer{
       display: flex;
+      flex-wrap: wrap;
   }
+

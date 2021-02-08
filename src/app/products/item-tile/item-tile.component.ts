@@ -3,6 +3,8 @@ import { Item } from 'src/app/models/item.model';
 import { ItemsService } from '../../services/items.service';
 import {Input} from "@angular/core";
 
+
+
 @Component({
   selector: 'app-item-tile',
   templateUrl: './item-tile.component.html',
@@ -11,6 +13,9 @@ import {Input} from "@angular/core";
 export class ItemTileComponent implements OnInit {
   @Input('item') item: Item;
   constructor(
+    private itemsService: ItemsService,
+
+
    
     ) { }
 
@@ -18,6 +23,10 @@ export class ItemTileComponent implements OnInit {
    
   }
 
+  onAddToCart(addedItem:Item){
+    this.itemsService.addToCart(addedItem)
+
+  }
 
   
 
