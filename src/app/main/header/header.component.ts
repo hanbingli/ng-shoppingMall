@@ -33,10 +33,12 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = !!user;
       
     });
+
+  
+
     this.cartSub= this.itemsService.itemCount$.subscribe(itemCount =>{
       this.cartItemCount= itemCount;
-      console.log(this.cartItemCount)
-    })
+    });
 
   }
 

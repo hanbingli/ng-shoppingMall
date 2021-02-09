@@ -11,6 +11,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 
 import { MatSelectModule } from '@angular/material/select';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatTableModule} from '@angular/material/table';
 
 
 
@@ -27,6 +28,7 @@ import {MatBadgeModule} from '@angular/material/badge';
         MatSidenavModule,
         MatSelectModule,
         MatBadgeModule,
+        MatTableModule,
 
     ],
         
@@ -41,7 +43,8 @@ import {MatBadgeModule} from '@angular/material/badge';
         MatSidenavModule,
         MatSelectModule,
         MatBadgeModule,
-        
+        MatTableModule,
+
 
     ]
 })

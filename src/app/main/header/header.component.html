@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
    
-        <a href="#" class="titleLink"> 
+        <a routerLink="/items" class="titleLink"> 
             <div class="titleContainer">
                 <img src="https://img.icons8.com/wired/64/ffffff/bts-army.png"/>
                  <h1 class="title">Shopping Mall </h1>
@@ -27,7 +27,7 @@
         <span class="header-spacer"></span>
         <div class="header-function-buttons">
             <button mat-stroked-button routerLink="/auth" routerLinkActive="active" *ngIf="!isAuthenticated">Login</button>
-            <button mat-stroked-button routerLinkActive="active">
+            <button mat-stroked-button routerLink="/cart"   routerLinkActive="active">
                 <span [matBadge]="cartItemCount"   matBadgeColor="accent" matBadgeOverlap="false">Cart</span>
             </button>
             <!-- <button mat-stroked-button routerLink="/items/new" routerLinkActive="active">Add item</button> -->
