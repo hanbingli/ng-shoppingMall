@@ -1,3 +1,9 @@
 table {
     width: 100%;
   }
+
+  .cart-title{
+      margin: 5px;
+      padding: 3px;
+  }
+  

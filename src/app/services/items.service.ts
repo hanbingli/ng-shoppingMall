@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, tap, take, exhaustMap, find } from 'rxjs/operators';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
 
 import { Item } from '../models/item.model';
 import { CartItem } from '../models/cartItem.model';
@@ -22,11 +22,12 @@ export class ItemsService {
 
   catagories: string[]=[
     'food', 
-    'drinks',
+    'drink',
     'electronics',
     'health',
 
   ]
+  
 
   public newItem: Item;
 
@@ -40,18 +41,20 @@ export class ItemsService {
 
 
   getCat(){
+
     return this.catagories
     // return this.http
-        // .get<Item[]>(
-        //   'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
+    //     .get<Item[]>(
+    //       'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
           
-        // )
-        // .pipe(
-        //   map(items => {
-        //     return items.map(item=> item.catagory            
-        //     );
-        //   }),
+    //     )
+    //     .pipe(
+    //       map(items => {
+    //         return items.map(item=> item.catagory            
+    //         );
+    //       }))
        
+    //     }
   }
    
   getItems(){

@@ -6,8 +6,23 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 })
 export class FilterService {
 
+  private selectedCat$$:string;
+  public selectedCat$: Subject<string> = new Subject<string>();
+
+  private searchInput$$:string; 
+  public searchInput$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+
 
   constructor() { }
+
+  setCat(cat){
+    this.selectedCat$$= cat;
+    console.log(this.selectedCat$$)
+    this.selectedCat$.next(this.selectedCat$$)
+
+  }
+
+
 
   // let searchInput$$:string; 
   // searchInput$: Subject<string>= new Subject<string>()
