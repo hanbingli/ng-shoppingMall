@@ -16,6 +16,9 @@ import { Item } from 'src/app/models/item.model';
 export class SidebarComponent implements OnInit {
   private itemsSub: Subscription;
   private catSub: Subscription;
+  private filterSub: Subscription;
+
+  public filterInput: string='';
 
 
   loadedItems: Item[];
@@ -36,25 +39,37 @@ export class SidebarComponent implements OnInit {
         res=> {
           this.loadedItems=res;
           console.log(this.loadedItems)
-       
   
         }
       )
 
-      
-
-      
-
-   
+      this.filterSub = this.filterService.searchInput$.subscribe(
+        res=> {
+          this.filterInput = res
+         
+        }
+      )
     }
     
 
+   
+
 
     setCat(cat){
-      this.loadedItems= this.loadedItems.filter(item =>{ 
-        return item.catagory.match(cat)
-      })
-
+      if(cat == ''){
+        this.itemsSub = this.itemsService.getItems().subscribe(
+          res=> {
+            this.loadedItems=res;
+            console.log(this.loadedItems)
+    
+          }
+        )
+      }else{
+        this.loadedItems= this.loadedItems.filter(item =>{ 
+          return item.catagory.match(cat)
+        })
+      }
+     
     }
   
   }

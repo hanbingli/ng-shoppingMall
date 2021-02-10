@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item } from '../../models/item.model';
@@ -15,17 +15,22 @@ import { FilterService } from '../../services/filter.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('searchInput') searchInput: ElementRef;
 
   isAuthenticated = false;
   private userSub: Subscription;
   private cartSub: Subscription;
+
+
   public cartItemCount: number;
+ 
 
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
     private authService: AuthService,
     private itemsService: ItemsService,
+    private filterService: FilterService,
     ) { }
 
   ngOnInit(): void {
@@ -34,13 +39,19 @@ export class HeaderComponent implements OnInit {
       
     });
 
-  
-
     this.cartSub= this.itemsService.itemCount$.subscribe(itemCount =>{
       this.cartItemCount= itemCount;
     });
 
+   
   }
+
+  onReset(){
+    this.ngOnInit()
+
+  }
+
+
 
   onNewItem(){
     this.router.navigate([
@@ -50,19 +61,29 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  onSearch(input){
+  onSearch(event: Event){
+    const value = (event.target as HTMLInputElement).value;
 
+    if (value.length === 0) {
 
+      this.clearInput();
+   
+    } else {
+      this.filterService.setSearch(value);
+      console.log(value)
+      // this.clearInput()
+    }
   }
 
-
-
-
-
-
-
-  ngOnDestroy() {
-    this.userSub.unsubscribe();
+  clearInput() {
+    this.searchInput.nativeElement.value = '';
+    this.filterService.setSearch('');
   }
+  
+
+
+  // ngOnDestroy() {
+  //   this.userSub.unsubscribe();
+  // }
 
 }

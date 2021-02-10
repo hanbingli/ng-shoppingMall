@@ -1,6 +1,7 @@
 <mat-drawer-container class="drawer-container">
     <mat-drawer class="sidebar" mode="side" opened>
         <h2 class="cat-title">Catagories</h2>
+        <button mat-button class="cat" (click)="setCat('')">All Products</button>
        <div class="cat-buttonContainer">
         <button mat-button class="cat" *ngFor="let cat of loadedCat" (click)="setCat(cat)">{{ cat}}</button>
        </div>
@@ -8,9 +9,12 @@
        
     </mat-drawer>
     <mat-drawer-content class="tileContainer">
-        <app-item-tile *ngFor="let item of loadedItems" 
-        [item] = "item"></app-item-tile>
+        <app-item-tile [item] = "item" *ngFor="let item of loadedItems | searchFilter: filterInput"></app-item-tile>
+        <mat-card class="card-container" *ngIf="loadedItems.length === 0">
+            No results found
 
+          </mat-card>
+          
     </mat-drawer-content>
   </mat-drawer-container>
   
