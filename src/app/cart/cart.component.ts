@@ -32,12 +32,9 @@ export class CartComponent implements OnInit {
   
   private cartListItems: PeriodicElement[];
 
-  displayedColumns: string[]= ['name', 'amount'];
+  displayedColumns: string[]= ['name', 'price',  'amount',];
   dataSource:PeriodicElement[];
 
-
-
-  
 
   constructor(
     private itemsService: ItemsService,
@@ -52,11 +49,15 @@ export class CartComponent implements OnInit {
 
 
     this.cartListItems= this.cartItems$$.map(
-      item=>({name: item.item.name, amount:item.amount})
+      item=>({name: item.item.name, price: item.item.price, amount:item.amount})
     );
     console.log(this.cartListItems)
     this.dataSource = this.cartListItems;
 
+  }
+
+  getTotalCost() {
+    return this.cartListItems.map(i => i.amount*i.price).reduce((acc, value) => acc + value, 0);
   }
  
 
