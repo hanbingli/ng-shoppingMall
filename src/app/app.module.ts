@@ -15,7 +15,8 @@ import { SearchPipePipe } from './pipes/search-pipe.pipe';
 import { AuthComponent } from './auth/auth.component'
 import { AlertComponent } from './shared/alert/alert.component'
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-import { CartComponent } from './cart/cart.component'
+import { CartComponent } from './cart/cart.component';
+import { SortPipe } from './pipes/sort.pipe'
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { CartComponent } from './cart/cart.component'
     AlertComponent,
     LoadingSpinnerComponent,
     CartComponent,
+    SortPipe,
   ],
   imports: [
     BrowserModule,

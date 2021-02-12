@@ -1,33 +1,57 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
 
-  private selectedCat$$:string;
-  public selectedCat$: Subject<string> = new Subject<string>();
 
-  private searchInput$$:string ='';
-  public searchInput$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  private readonly searchQuery$$ = new BehaviorSubject<string>('');
+  public readonly searchQuery$: Observable<string> = this.searchQuery$$.asObservable();
+
+  private readonly searchField$$ = new BehaviorSubject<string>('');
+  public readonly searchField$: Observable<string> = this.searchField$$.asObservable();
+
+  private readonly selectedCat$$ = new BehaviorSubject<string>('');
+  public readonly selectedCat$: Observable<string> = this.selectedCat$$.asObservable();
+
+  private readonly sortingField$$ = new BehaviorSubject<string>('');
+  public readonly sortingField$: Observable<string> = this.sortingField$$.asObservable();
+
+  private readonly sortingOption$$ = new BehaviorSubject<string>('');
+  public readonly sortingOption$: Observable<string> = this.sortingOption$$.asObservable();
+
+
+  // public readonly hasSearchText$: Observable<boolean> = this.searchQuery$$.pipe(
+  //   map(query => query !== null && query.length > 0),
+  // );
 
   constructor() { }
 
-  // setCat(cat){
-  //   this.selectedCat$$= cat;
-  //   console.log(this.selectedCat$$)
-  //   this.selectedCat$.next(this.selectedCat$$)
+  setCat(cat:string){
 
-  // }
+    this.searchQuery$$.next(cat)
+    this.searchField$$.next('catagory')
+
+  }
  
 
   setSearch(searchInput:string){
-    this.searchInput$$=searchInput;
-    this.searchInput$.next(this.searchInput$$)
-    console.log(this.searchInput$$)
+    this.searchQuery$$.next(searchInput)
+    this.searchField$$.next('name')
 
   }
+
+  setSorting(sortingInput:string){
+    this.sortingField$$.next('price')
+    this.sortingOption$$.next(sortingInput)
+  }
+
+
 
 
 

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnChanges } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { ItemsService } from '../../services/items.service';
 import { FilterService } from '../../services/filter.service';
@@ -14,14 +14,21 @@ import { Item } from 'src/app/models/item.model';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  private itemsSub: Subscription;
-  private catSub: Subscription;
-  private filterSub: Subscription;
-
-  public filterInput: string='';
 
 
-  loadedItems: Item[];
+  public readonly searchQuery$ = this.filterService.searchQuery$;
+  public readonly selectedCat$ = this.filterService.selectedCat$;
+  public readonly searchField$ = this.filterService.searchField$;
+
+  public  sortingField$: string = ''
+  public  sortingOption$:string = ''
+
+
+  
+
+  loadedItems$: Observable<Item[]>;
+
+ 
   loadedCat: string[];
 
   searchMode:boolean;
@@ -33,44 +40,50 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit(){
       this.loadedCat = this.itemsService.getCat()
+      this.itemsService.getItems();
+      this.loadedItems$= this.itemsService.loadedItems$;
+
      
+     
+      // this.itemsSub = this.itemsService.getItems().subscribe(
+      //   res=> {
+      //     this.loadedItems=res;
+      //     console.log(this.loadedItems)
   
-      this.itemsSub = this.itemsService.getItems().subscribe(
-        res=> {
-          this.loadedItems=res;
-          console.log(this.loadedItems)
-  
-        }
-      )
+      //   }
+      // )
 
-      this.filterSub = this.filterService.searchInput$.subscribe(
-        res=> {
-          this.filterInput = res
+      // this.filterSub = this.filterService.searchInput$.subscribe(
+      //   res=> {
+      //     this.filterInput = res
          
-        }
-      )
+      //   }
+      // )
     }
-    
 
-   
+
 
 
     setCat(cat){
       if(cat == ''){
-        this.itemsSub = this.itemsService.getItems().subscribe(
-          res=> {
-            this.loadedItems=res;
-            console.log(this.loadedItems)
-    
-          }
-        )
+        this.filterService.setSearch('');
+        // this.sortingField$= '';
       }else{
-        this.loadedItems= this.loadedItems.filter(item =>{ 
-          return item.catagory.match(cat)
-        })
+
+        this.filterService.setCat(cat);
       }
      
     }
+
+
+    onChangeSorting({ value }: { value: string }){
+
+      this.sortingField$= 'price';
+      this.sortingOption$ = value;
+    }
+
+
+
   
   }
   

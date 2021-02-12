@@ -5,19 +5,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SearchPipePipe implements PipeTransform {
 
-  transform(value: any, filterString: string): any {
-    if(value.length === 0 || filterString === ''){
+  transform(value: any, filterString: string,  propName): any {
+    const resultArray =[];
+
+    if(value.length === 0 || filterString === '' || propName === ''){
       return value;
     }else{
       for (const item of value){
-        const resultArray =[];
-        if (item.name.toLowerCase().includes(filterString.toLowerCase())){
+        
+        if (item[propName].toLowerCase().includes(filterString.toLowerCase())){
           resultArray.push(item)
         }
-        return resultArray;
+       
   
       }
-
+      return resultArray;
     }
    
   }

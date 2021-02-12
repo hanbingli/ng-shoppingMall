@@ -39,6 +39,12 @@ export class ItemsService {
   private itemCount$$: number = 0;
   public itemCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
+  private loadedItems$$ = new BehaviorSubject<Item[]>([]);
+  loadedItems$ = this.loadedItems$$.asObservable();
+
+  private readonly searchQuery$$ = new BehaviorSubject<string>('');
+  public readonly searchQuery$: Observable<string> = this.searchQuery$$.asObservable();
+
 
   getCat(){
 
@@ -62,8 +68,39 @@ export class ItemsService {
     .get<Item[]>(
       'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
     )
-   
+    .subscribe((items:Item[])=>{
+      this.loadedItems$$.next(items)
+
+    }, 
+    err =>{
+      console.log(err)
+    }
+    )  
   }
+
+
+  // public readonly filteredApiModules$: Observable<Map<string, Item>> = combineLatest([
+
+  //   this.loadedItems$,
+  //   this.searchQuery$,
+  // ]).pipe(
+  //   map(([apiModules, searchQuery]: [[string, Item][], string]) => {
+
+  //     const formattedSearchQuery = searchQuery.trim().toLowerCase();
+
+  //     const filteredApiModules: [string, ApiModule][] = apiModules.filter(([, { title, tags }]) => {
+  //       const isTitleMathSearchQuery = title.toLowerCase().includes(formattedSearchQuery);
+  //       const isTagsMatchSearchQuery = tags.some(tag => tag.toLowerCase().includes(formattedSearchQuery));
+
+  //       return isTitleMathSearchQuery || isTagsMatchSearchQuery;
+  //     });
+
+  //     return new Map<string, ApiModule>(filteredApiModules);
+  //   }),
+  // );
+
+
+
 
   addItem(item:Item){
     
