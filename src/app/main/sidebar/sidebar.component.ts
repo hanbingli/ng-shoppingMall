@@ -1,11 +1,14 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { catchError, first, map, shareReplay } from 'rxjs/operators';
 
 import { ItemsService } from '../../services/items.service';
 import { FilterService } from '../../services/filter.service';
+import { filter } from 'rxjs/operators';
 
 
 import { Item } from 'src/app/models/item.model';
+import { threadId } from 'worker_threads';
 
 
 @Component({
@@ -15,18 +18,32 @@ import { Item } from 'src/app/models/item.model';
 })
 export class SidebarComponent implements OnInit {
 
-
+  public readonly loadedItems$ = this.itemsService.loadedItems$;
   public readonly searchQuery$ = this.filterService.searchQuery$;
   public readonly selectedCat$ = this.filterService.selectedCat$;
-  public readonly searchField$ = this.filterService.searchField$;
 
+  // public readonly searchField$ = this.filterService.searchField$;
+
+
+  private shownItems$$ = new BehaviorSubject<Item[]>([]);
+  public readonly shownItems$ = this.shownItems$$.asObservable();
+  
   public  sortingField$: string = ''
   public  sortingOption$:string = ''
 
 
+
+  loadedItems: Item[];
+  filteredItems:Item[];
+
+ 
+  itemsSub: Subscription;
+  filterSub:Subscription;
+  searchSub: Subscription;
+  
+ 
   
 
-  loadedItems$: Observable<Item[]>;
 
  
   loadedCat: string[];
@@ -41,45 +58,81 @@ export class SidebarComponent implements OnInit {
     ngOnInit(){
       this.loadedCat = this.itemsService.getCat()
       this.itemsService.getItems();
-      this.loadedItems$= this.itemsService.loadedItems$;
+      this.itemsSub= this.loadedItems$.subscribe(
+        (items:Item[])=>{
+          this.loadedItems = items;
+          console.log(this.loadedItems)
+          this.shownItems$$.next(this.loadedItems)
 
-     
-     
-      // this.itemsSub = this.itemsService.getItems().subscribe(
-      //   res=> {
-      //     this.loadedItems=res;
-      //     console.log(this.loadedItems)
-  
-      //   }
-      // )
+        }
+      )
 
-      // this.filterSub = this.filterService.searchInput$.subscribe(
-      //   res=> {
-      //     this.filterInput = res
-         
-      //   }
-      // )
+      
+    
     }
 
-
-
+   
 
     setCat(cat){
-      if(cat == ''){
-        this.filterService.setSearch('');
-        // this.sortingField$= '';
-      }else{
+      this.filterService.setCat(cat);
+      console.log('cathit')
+    
+     
 
-        this.filterService.setCat(cat);
-      }
+      this.filterSub=this.selectedCat$.subscribe(
+        ((cat:string)=>{
+          if(cat.length === 0){
+            this.filteredItems= this.loadedItems;
+          }else{
+            this.filteredItems = this.loadedItems.filter(item =>
+              item.catagory == cat
+            );
+          }
+          this.shownItems$$.next( this.filteredItems)
+         console.log(cat)
+          console.log( this.filteredItems)
+        })
+      )
+    
+      this.searchSub=this.searchQuery$.subscribe(
+        ((query:string)=>{
+
+            if(this.filteredItems.length === 0){
+              this.filteredItems = this.loadedItems
+            }else{
+            
+            this.filteredItems = this.filteredItems.filter(
+              item => item.name.toLowerCase().includes(query.toLowerCase())
+            );
+          }
+          this.shownItems$$.next( this.filteredItems)
+         console.log(cat)
+          console.log( this.filteredItems)
+        })
+      )
+    
+    
+
+
+
+      // if(cat == ''){
+      //   this.filterService.setSearch('');
+      //   // this.sortingField$= '';
+      // }else{
+
+      //   this.filterService.setCat(cat);
+      // }
      
     }
-
 
     onChangeSorting({ value }: { value: string }){
 
       this.sortingField$= 'price';
       this.sortingOption$ = value;
+    }
+
+    onClear(){
+      this.filterService.onClear()
     }
 
 

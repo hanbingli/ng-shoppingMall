@@ -40,27 +40,19 @@ export class ItemsService {
   public itemCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   private loadedItems$$ = new BehaviorSubject<Item[]>([]);
-  loadedItems$ = this.loadedItems$$.asObservable();
+  public readonly loadedItems$ = this.loadedItems$$.asObservable();
 
   private readonly searchQuery$$ = new BehaviorSubject<string>('');
   public readonly searchQuery$: Observable<string> = this.searchQuery$$.asObservable();
 
 
+  // private readonly selectedCat$$ = new BehaviorSubject<string>('');
+  // public readonly selectedCat$: Observable<string> = this.selectedCat$$.asObservable();
+
   getCat(){
 
     return this.catagories
-    // return this.http
-    //     .get<Item[]>(
-    //       'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
-          
-    //     )
-    //     .pipe(
-    //       map(items => {
-    //         return items.map(item=> item.catagory            
-    //         );
-    //       }))
-       
-    //     }
+
   }
    
   getItems(){
@@ -77,6 +69,7 @@ export class ItemsService {
     }
     )  
   }
+
 
 
   // public readonly filteredApiModules$: Observable<Map<string, Item>> = combineLatest([
@@ -123,22 +116,22 @@ export class ItemsService {
         let findResult = this.findItem(item.id)
 
         if(findResult < 0 ){
-          this.cart$$.push({item, amount:1});
+          this.cart$$.push({item,price:item.price, amount:1});
           this.cart$.next(this.cart$$.slice());
-          console.log(this.cart$$)
+          // console.log(this.cart$$)
 
         }else{
           this.cart$$[findResult].amount++;
           this.cart$.next(this.cart$$.slice());
-          console.log(this.cart$$)
+          // console.log(this.cart$$)
           
         }
         
 
       }else{
-        this.cart$$.push({item, amount:1});
+        this.cart$$.push({item,price:item.price, amount:1, });
         this.cart$.next(this.cart$$.slice());
-        console.log(this.cart$$)
+        // console.log(this.cart$$)
 
       }
 
@@ -174,30 +167,21 @@ export class ItemsService {
       return findResult
     }
 
-      
 
 
-    //   for (var i = 0; i < this.cart$$.length; i++) {
-    //     if (this.cart$$[i].item.id == id) {
-    //         return i;
-    //     }else{
-    //       return -1;
-    //     }
-    //     }
-    // }return -1;
-    // }
+
+
+
+
+
+
+    
 
       
   }
 
 
 
-  // getCartItems(){
-  //   return this.cart$$
-  
-
-
-  // }
 
 
 

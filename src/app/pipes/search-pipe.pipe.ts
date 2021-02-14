@@ -11,17 +11,18 @@ export class SearchPipePipe implements PipeTransform {
     if(value.length === 0 || filterString === '' || propName === ''){
       return value;
     }else{
-      for (const item of value){
+      return value.filter(item => item[propName].toLowerCase().includes(filterString.toLowerCase()))
+      // for (const item of value){
         
-        if (item[propName].toLowerCase().includes(filterString.toLowerCase())){
-          resultArray.push(item)
-        }
+      //   if (item[propName].toLowerCase().includes(filterString.toLowerCase())){
+      //     resultArray.push(item)
+      //   }
        
   
       }
-      return resultArray;
+      // return resultArray;
     }
    
   }
 
-}
+

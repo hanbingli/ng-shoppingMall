@@ -5,6 +5,8 @@
    width: fit-content;
    min-width: 800px;
    min-height: 800px;
+   border:solid red 1px;
+   
 
 
 }

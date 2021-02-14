@@ -32,17 +32,30 @@ export class FilterService {
 
   constructor() { }
 
+  // setCat(cat:string){
+
+  //   this.searchQuery$$.next(cat)
+  //   this.searchField$$.next('catagory')
+
+  // }
+
+
   setCat(cat:string){
-
-    this.searchQuery$$.next(cat)
-    this.searchField$$.next('catagory')
-
+    
+    this.selectedCat$$.next(cat);
+    console.log(this.selectedCat$);
+    // this.clearCat()
   }
  
 
   setSearch(searchInput:string){
-    this.searchQuery$$.next(searchInput)
-    this.searchField$$.next('name')
+    if(searchInput.length ===0) {
+    searchInput = searchInput;
+    }else{
+      this.searchQuery$$.next(searchInput)
+    }
+  
+    // this.searchField$$.next('name')
 
   }
 
@@ -51,7 +64,14 @@ export class FilterService {
     this.sortingOption$$.next(sortingInput)
   }
 
+  clearCat(){
+    this.selectedCat$$.next('')
+  }
 
+  onClear(){
+    this.selectedCat$$.next('')
+    this.searchQuery$$.next('')
+  }
 
 
 

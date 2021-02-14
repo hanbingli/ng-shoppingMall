@@ -9,19 +9,14 @@ import { CartItem } from '../models/cartItem.model';
 export interface PeriodicElement {
   name: string;
   amount: number;
-//  price: number;
+ price: number;
 }
-
-
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-
-
-
 
 export class CartComponent implements OnInit {
 
@@ -32,7 +27,7 @@ export class CartComponent implements OnInit {
   
   private cartListItems: PeriodicElement[];
 
-  displayedColumns: string[]= ['name', 'price',  'amount',];
+  displayedColumns: string[]= ['name', 'price',  'amount'];
   dataSource:PeriodicElement[];
 
 
@@ -44,24 +39,19 @@ export class CartComponent implements OnInit {
     this.cartItemsSub= this.itemsService.cart$.subscribe(items =>{
       this.cartItems$$= items;
     });
-    console.log(this.cartItems$$)
-
-
+    // console.log(this.cartItems$$)
 
     this.cartListItems= this.cartItems$$.map(
-      item=>({name: item.item.name, price: item.item.price, amount:item.amount})
+      item=>({name: item.item.name, price: item.price, amount:item.amount})
     );
     console.log(this.cartListItems)
     this.dataSource = this.cartListItems;
-
   }
 
   getTotalCost() {
-    return this.cartListItems.map(i => i.amount*i.price).reduce((acc, value) => acc + value, 0);
+    return this.cartListItems.map(i => i.price*i.amount).reduce((acc, value) => acc + value, 0);
   }
  
-
-
 
 
 }

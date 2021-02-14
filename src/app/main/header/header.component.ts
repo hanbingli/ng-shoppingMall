@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item } from '../../models/item.model';
@@ -21,39 +21,38 @@ export class HeaderComponent implements OnInit {
   private userSub: Subscription;
   private cartSub: Subscription;
 
-
   public cartItemCount: number;
- 
+
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
     private itemsService: ItemsService,
     private filterService: FilterService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
-      
+
     });
 
-    this.cartSub= this.itemsService.itemCount$.subscribe(itemCount =>{
-      this.cartItemCount= itemCount;
+    this.cartSub = this.itemsService.itemCount$.subscribe(itemCount => {
+      this.cartItemCount = itemCount;
     });
 
-   
+
   }
 
-  onReset(){
+  onReset() {
     this.ngOnInit()
 
   }
 
 
 
-  onNewItem(){
+  onNewItem() {
     this.router.navigate([
       '/items/new'
     ])
@@ -61,14 +60,15 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  onSearch(event: Event){
+  onSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
 
     if (value.length === 0) {
 
       this.clearInput();
-   
+
     } else {
+
       this.filterService.setSearch(value);
       console.log(value)
       // this.clearInput()
@@ -79,11 +79,11 @@ export class HeaderComponent implements OnInit {
     this.searchInput.nativeElement.value = '';
     this.filterService.setSearch('');
   }
-  
 
 
-  // ngOnDestroy() {
-  //   this.userSub.unsubscribe();
-  // }
+  onClear(){
+    this.filterService.onClear()
+  }
+
 
 }

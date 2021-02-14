@@ -1,37 +1,45 @@
 <mat-drawer-container class="drawer-container">
-    <mat-drawer class="sidebar" mode="side" opened>
-        <h2 class="cat-title">Catagories</h2>
-        <button mat-button class="cat" (click)="setCat('')">All Products</button>
-       <div class="cat-buttonContainer">
-        <button mat-button class="cat" *ngFor="let cat of loadedCat" (click)="setCat(cat)">{{ cat}}</button>
-       </div>
-        
-       
-    </mat-drawer>
-    <mat-drawer-content class="tileContainer">
-      <div class="search-header">
-        <mat-form-field class="sorting-option">
-          <mat-label>Sorting option</mat-label>
-          <mat-select 
-                  (selectionChange)="onChangeSorting($event)">
-            <mat-option [value]="'random'">--</mat-option>
-            <mat-option [value]="'asc'">
-             price from low to high
-            </mat-option>
-            <mat-option [value]="'desc'">
-              price from high to low
-             </mat-option>
-          </mat-select>
-          </mat-form-field>
-      </div>
-        <!-- <app-item-tile [item] = "item" *ngFor="let item of (loadedItems$ | async) "></app-item-tile> -->
-        <app-item-tile [item] = "item" *ngFor="let item of (loadedItems$ | async) | searchFilter: (searchQuery$ | async): (searchField$ | async) | sort: [sortingField$, sortingOption$]"></app-item-tile>
-        <!-- {{loadedItems$ | async}} -->
-        <mat-card class="card-container" *ngIf="(loadedItems$ | async).length === 0">
-            No results found
 
-          </mat-card>
-          
-    </mat-drawer-content>
-  </mat-drawer-container>
-  
+  <mat-drawer class="sidebar" mode="side" opened>
+    <h2 class="cat-title">Catagories</h2>
+    <button mat-button class="cat" (click)="onClear()">All Products</button>
+    <div class="cat-buttonContainer">
+      <button mat-button class="cat" *ngFor="let cat of loadedCat" (click)="setCat(cat)">{{ cat}}</button>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content class="tileContainer">
+
+    <div class="search-header">
+      <mat-form-field class="sorting-option">
+        <mat-label>Sorting option</mat-label>
+        <mat-select (selectionChange)="onChangeSorting($event)">
+          <mat-option [value]="'random'">--</mat-option>
+          <mat-option [value]="'asc'">
+            price from low to high
+          </mat-option>
+          <mat-option [value]="'desc'">
+            price from high to low
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- <app-item-tile [item] = "item" *ngFor="let item of (loadedItems$ | async) "></app-item-tile> -->
+    <app-item-tile [item]="item"
+      *ngFor="let item of (shownItems$ | async) | sort: [sortingField$, sortingOption$]">
+    </app-item-tile>
+
+    <!-- <app-item-tile [item]="item"
+    *ngFor="let item of (shownItems$ | async)| searchFilter: (searchQuery$ | async): (searchField$ | async) | sort: [sortingField$, sortingOption$]">
+  </app-item-tile> -->
+
+
+    <!-- {{loadedItems$ | async}} -->
+    <h3 class="card-container" *ngIf="(shownItems$ | async).length === 0">
+      No results found
+
+    </h3>
+
+  </mat-drawer-content>
+</mat-drawer-container>
