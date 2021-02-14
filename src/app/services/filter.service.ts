@@ -59,17 +59,19 @@ export class FilterService {
 
   }
 
+  clearSearch(){
+    this.searchQuery$$.next('')
+  }
+
   setSorting(sortingInput:string){
     this.sortingField$$.next('price')
     this.sortingOption$$.next(sortingInput)
   }
 
-  clearCat(){
-    this.selectedCat$$.next('')
-  }
+
 
   onClear(){
-    this.selectedCat$$.next('')
+
     this.searchQuery$$.next('')
   }
 

@@ -77,7 +77,7 @@ export class HeaderComponent implements OnInit {
 
   clearInput() {
     this.searchInput.nativeElement.value = '';
-    this.filterService.setSearch('');
+    this.filterService.clearSearch();
   }
 
 
