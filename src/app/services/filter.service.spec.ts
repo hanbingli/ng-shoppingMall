@@ -38,7 +38,7 @@ describe('FilterService', () => {
   describe('selectCat', () =>{
 
     it('should be empty string as selected by default', (done: DoneFn) => {
-      service.selectedCat$.subscribe(
+      service.selectedCatagory$.subscribe(
         defaultCat =>{
           expect(defaultCat).toBe('');
           done();

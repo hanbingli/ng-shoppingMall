@@ -71,7 +71,13 @@ describe('SidebarComponent', () => {
     expect(itemsService.getItems()).toHaveBeenCalled()//?????????????
   })
 
-
+  it('should be empty string as search query by default', (done: DoneFn) => {
+    itemsService.searchQuery$.subscribe(
+      defaultSQuery =>{
+        expect(defaultSQuery).toBe('');
+        done();
+      })
+    });
 
 
 

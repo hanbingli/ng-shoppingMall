@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, tap, take, exhaustMap, find } from 'rxjs/operators';
-import { Subject, Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 import { Item } from '../models/item.model';
 import { CartItem } from '../models/cartItem.model';
 
 import { AuthService } from '../auth/auth.service';
-
-
+import { FilterService } from './filter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,21 +16,19 @@ export class ItemsService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private filterService: FilterService,
   ) { }
 
-  catagories: string[]=[
-    'food', 
+  catagories: string[] = [
+    'food',
     'drink',
     'electronics',
     'health',
-
   ]
-  
 
   public newItem: Item;
-
-  private exist:boolean;
+  private items: Item[] = []
 
   private cart$$: CartItem[] = [];
   public cart$: BehaviorSubject<CartItem[]> = new BehaviorSubject<CartItem[]>([]);
@@ -42,143 +39,85 @@ export class ItemsService {
   private loadedItems$$ = new BehaviorSubject<Item[]>([]);
   public readonly loadedItems$ = this.loadedItems$$.asObservable();
 
-  private readonly searchQuery$$ = new BehaviorSubject<string>('');
-  public readonly searchQuery$: Observable<string> = this.searchQuery$$.asObservable();
+  public readonly searchQuery$ = this.filterService.searchQuery$;
+  public readonly selectedCatagory$ = this.filterService.selectedCatagory$;
 
+  public readonly filteredItems$ = combineLatest([this.loadedItems$, this.searchQuery$, this.selectedCatagory$]).pipe(
+    map(([loadedItems, searchQuery, selectedCatagory]: [Item[], string, string]) => {
+      const formattedSearchQuery = searchQuery.trim().toLowerCase();
+      const filteredItems: Item[] = loadedItems.filter(item => {
+        return item.name.toLowerCase().includes(formattedSearchQuery) && item.catagory.toLowerCase().includes(selectedCatagory);
+        // const isTitleMatchSearchQuery = item.name.toLowerCase().includes(formattedSearchQuery);
+        // const isTagMatchSearchQuery = item.catagory.toLowerCase().includes(selectedCatagory);
+        // return isTitleMatchSearchQuery || isTagMatchSearchQuery;
+      })
+      console.log(filteredItems)
+      return filteredItems;
 
-  // private readonly selectedCat$$ = new BehaviorSubject<string>('');
-  // public readonly selectedCat$: Observable<string> = this.selectedCat$$.asObservable();
-
-  getCat(){
-
-    return this.catagories
-
-  }
-   
-  getItems(){
-    return this.http
-    .get<Item[]>(
-      'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
-    )
-    .subscribe((items:Item[])=>{
-      this.loadedItems$$.next(items)
-
-    }, 
-    err =>{
-      console.log(err)
-    }
-    )  
-  }
-
-
-
-  // public readonly filteredApiModules$: Observable<Map<string, Item>> = combineLatest([
-
-  //   this.loadedItems$,
-  //   this.searchQuery$,
-  // ]).pipe(
-  //   map(([apiModules, searchQuery]: [[string, Item][], string]) => {
-
-  //     const formattedSearchQuery = searchQuery.trim().toLowerCase();
-
-  //     const filteredApiModules: [string, ApiModule][] = apiModules.filter(([, { title, tags }]) => {
-  //       const isTitleMathSearchQuery = title.toLowerCase().includes(formattedSearchQuery);
-  //       const isTagsMatchSearchQuery = tags.some(tag => tag.toLowerCase().includes(formattedSearchQuery));
-
-  //       return isTitleMathSearchQuery || isTagsMatchSearchQuery;
-  //     });
-
-  //     return new Map<string, ApiModule>(filteredApiModules);
-  //   }),
-  // );
-
-
-
-
-  addItem(item:Item){
-    
-    this.newItem=item;
-    this.http
-    .post(
-        'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json', 
-        this.newItem)
-    .subscribe(response =>{
-    console.log(response)
     })
+  )
 
+  getCatagories() {
+    return this.catagories
   }
 
-  addToCart(item:Item){
+  fetchItems() {
+    return this.http
+      .get<Item[]>(
+        'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json'
+      )
+  }
 
-    
-      if(this.itemCount$$){
+  getItems() {
+    this.fetchItems().subscribe(data => {
+      this.items = data;
+      this.loadedItems$$.next(this.items.slice());
+    })
+  }
 
-        let findResult = this.findItem(item.id)
+  addItem(item: Item) {
+    this.newItem = item;
+    this.http
+      .post(
+        'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json',
+        this.newItem)
+      .subscribe(response => {
+        console.log(response)
+      })
+  }
 
-        if(findResult < 0 ){
-          this.cart$$.push({item,price:item.price, amount:1});
-          this.cart$.next(this.cart$$.slice());
-          // console.log(this.cart$$)
-
-        }else{
-          this.cart$$[findResult].amount++;
-          this.cart$.next(this.cart$$.slice());
-          // console.log(this.cart$$)
-          
-        }
-        
-
-      }else{
-        this.cart$$.push({item,price:item.price, amount:1, });
+  addToCart(item: Item) {
+    if (this.itemCount$$) {
+      let findResult = this.findItem(item.id)
+      if (findResult < 0) {
+        this.cart$$.push({ item, price: item.price, amount: 1 });
         this.cart$.next(this.cart$$.slice());
-        // console.log(this.cart$$)
-
+      } else {
+        this.cart$$[findResult].amount++;
+        this.cart$.next(this.cart$$.slice());
       }
-
-      
-    
-    this.itemCount$$= this.cart$$.length
+    } else {
+      this.cart$$.push({ item, price: item.price, amount: 1, });
+      this.cart$.next(this.cart$$.slice());
+    }
+    this.itemCount$$ = this.cart$$.length
     this.itemCount$.next(this.itemCount$$)
-
-
-
-
-    }
-
-  // findCartItem(id:number){
-  //   return this.cart$$
-  // }
-
-
-  findItem(id:number){
-    let findResult:number;
-      const found = this.cart$$.findIndex(i=> i.item.id === id);
-      if(!!found ){
-
-        findResult=found
-       
-      }else if (found === 0){
-
-        findResult=found
-      }
-      else{
-       findResult = -1
-      }
-      return findResult
-    }
-
-
-
-
-
-
-
-
-
-    
-
-      
   }
+
+  findItem(id: number) {
+    let findResult: number;
+    const found = this.cart$$.findIndex(i => i.item.id === id);
+    if (!!found) {
+      findResult = found
+    } else if (found === 0) {
+      findResult = found
+    }
+    else {
+      findResult = -1
+    }
+    return findResult
+  }
+}
 
 
 

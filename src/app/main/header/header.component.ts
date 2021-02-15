@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Item } from '../../models/item.model';
-
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../auth/auth.service';
 import { ItemsService } from '../../services/items.service';
@@ -14,19 +12,17 @@ import { FilterService } from '../../services/filter.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   isAuthenticated = false;
   private userSub: Subscription;
   private cartSub: Subscription;
-
   public cartItemCount: number;
-
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private itemsService: ItemsService,
     private filterService: FilterService,
@@ -37,27 +33,9 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = !!user;
 
     });
-
     this.cartSub = this.itemsService.itemCount$.subscribe(itemCount => {
       this.cartItemCount = itemCount;
     });
-
-
-  }
-
-  onReset() {
-    this.ngOnInit()
-
-  }
-
-
-
-  onNewItem() {
-    this.router.navigate([
-      '/items/new'
-    ])
-
-
   }
 
   onSearch(event: Event) {
@@ -81,9 +59,14 @@ export class HeaderComponent implements OnInit {
     this.filterService.clearSearch();
   }
 
+  onClearAll() {
+    this.filterService.clearAll()
+  }
 
-  onClear(){
-    this.filterService.onClear()
+  onNewItem() {
+    this.router.navigate([
+      '/items/new'
+    ])
   }
 
 

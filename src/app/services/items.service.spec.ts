@@ -34,23 +34,26 @@ describe('ItemsService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
+
+
   it('should be created', () => {
     expect(itemsService).toBeTruthy();
   });
 
-  
-describe('products', () => {
-   it('should get all items', (done: DoneFn) => {
-    itemsService.loadedItems$.subscribe(
-      items =>{
-        expect(items).toBeTruthy('No items returned');
-        expect(items.length).toBe(9)   //——————————————————————————————————————————————————————————
 
-      } )
   
-  });
+// describe('products', () => {
+//    it('should get all items', (done: DoneFn) => {
+//     itemsService.loadedItems$.subscribe(
+//       items =>{
+//         expect(items).toBeTruthy('No items returned');
+//         expect(items.length).toBe(9)   //——————————————————————————————————————————————————————————
 
-})
+//       } )
+  
+//   });
+
+// })
 
  
 

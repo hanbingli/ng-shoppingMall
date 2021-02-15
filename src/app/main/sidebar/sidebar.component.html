@@ -1,11 +1,13 @@
 <mat-drawer-container class="drawer-container">
-
+  
   <mat-drawer class="sidebar" mode="side" opened>
+
     <h2 class="cat-title">Catagories</h2>
     <button mat-button class="cat" (click)="onClear()">All Products</button>
     <div class="cat-buttonContainer">
-      <button mat-button class="cat" *ngFor="let cat of loadedCat" (click)="setCat(cat)">{{ cat}}</button>
+      <button mat-button class="cat" *ngFor="let catagory of loadedCatagories" (click)="onSelectCatagory(catagory)">{{ catagory}}</button>
     </div>
+
   </mat-drawer>
 
   <mat-drawer-content class="tileContainer">
@@ -25,17 +27,14 @@
       </mat-form-field>
     </div>
 
-    <!-- <app-item-tile [item] = "item" *ngFor="let item of (loadedItems$ | async) "></app-item-tile> -->
-    <!-- <app-item-tile [item]="item"
-        *ngFor="let item of (shownItems$ | async)| searchFilter: (searchQuery$ | async): (searchField$ | async) | sort: [sortingField$, sortingOption$]">
-    </app-item-tile> -->
     <app-item-tile [item]="item" class="item-tile"
-      *ngFor="let item of (shownItems$ | async) | sort: [sortingField$, sortingOption$]">
+      *ngFor="let item of (filteredItems$ | async) | sort: [sortingField$, sortingOption$]">
     </app-item-tile>
 
-    <h3 class="card-container" *ngIf="(shownItems$ | async).length === 0">
+    <h3 class="card-container" *ngIf="(filteredItems$ | async).length === 0">
       No results found
     </h3>
 
   </mat-drawer-content>
+
 </mat-drawer-container>
