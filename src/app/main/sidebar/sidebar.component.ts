@@ -7,6 +7,7 @@ import { FilterService } from '../../services/filter.service';
 import { filter } from 'rxjs/operators';
 
 
+
 import { Item } from 'src/app/models/item.model';
 
 
@@ -62,6 +63,7 @@ export class SidebarComponent implements OnInit {
 
 
   setCat(cat){
+    this.filterService.setCat('');
     this.filterService.setCat(cat);
     console.log('cathit')
   
