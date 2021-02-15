@@ -6,8 +6,6 @@ import { ItemsService } from '../../services/items.service';
 import { FilterService } from '../../services/filter.service';
 import { filter } from 'rxjs/operators';
 
-
-
 import { Item } from 'src/app/models/item.model';
 
 
@@ -23,10 +21,8 @@ export class SidebarComponent implements OnInit {
   public readonly searchQuery$ = this.filterService.searchQuery$;
   public readonly selectedCat$ = this.filterService.selectedCat$;
 
-
   itemsSub: Subscription;
   // filterSub: Subscription;
-  
 
   public sortingField$: string = '';
   public sortingOption$: string = '';
@@ -51,73 +47,55 @@ export class SidebarComponent implements OnInit {
     this.itemsSub = this.loadedItems$.subscribe(
       (items: Item[]) => {
         this.loadedItems = items;
-        this.filteredItems =items;
+        // this.filteredItems = items;
         console.log(this.loadedItems)
         this.shownItems$$.next(this.loadedItems);
       }
     );
-   
-
   }
 
 
-
-  setCat(cat){
+  setCat(cat) {
     this.filterService.setCat('');
     this.filterService.setCat(cat);
     console.log('cathit')
-  
-   
-
-    // if(cat == ''){
-    //   this.filterService.setSearch('');
-    //   // this.sortingField$= '';
-    // }else{
-
-    //   this.filterService.setCat(cat);
-    // }
-
   }
-  
-  filterSub: Subscription=this.selectedCat$.subscribe(
-    ((cat:string)=>{
-      if(cat.length === 0){
-        this.filteredItems= this.loadedItems;
-      }else{
-        this.filteredItems = this.filteredItems.filter(item =>
+
+  filterSub: Subscription = this.selectedCat$.subscribe(
+    ((cat: string) => {
+      if (cat.length === 0) {
+        this.filteredItems = this.loadedItems;
+      } else {
+        this.filteredItems = this.loadedItems.filter(item =>
           item.catagory == cat
         );
       }
       this.shownItems$$.next(this.filteredItems)
-     console.log(cat)
-      console.log( this.filteredItems)
+      console.log(cat)
+      console.log(this.filteredItems)
     })
   )
 
 
-
-  searchSub: Subscription=this.searchQuery$.subscribe(
-    ((query:string)=>{
-      if(this.filteredItems){
-        if(query.length ===0 ){
+  searchSub: Subscription = this.searchQuery$.subscribe(
+    ((query: string) => {
+      if (this.filteredItems) {
+        if (query.length === 0) {
           this.filteredItems = this.loadedItems
-          this.shownItems$$.next( this.filteredItems)
+          this.shownItems$$.next(this.filteredItems)
         }
-        else if(this.filteredItems.length === 0){
+        else if (this.filteredItems.length === 0) {
           this.filteredItems = this.loadedItems
-        }else{
-        
-        this.filteredItems = this.filteredItems.filter(
-          item => item.name.toLowerCase().includes(query.toLowerCase())
-        );
-      }
-      this.shownItems$$.next( this.filteredItems)
-     console.log(query)
-      console.log( this.filteredItems)
+        } else {
 
+          this.filteredItems = this.filteredItems.filter(
+            item => item.name.toLowerCase().includes(query.toLowerCase())
+          );
+        }
+        this.shownItems$$.next(this.filteredItems)
+        console.log(query)
+        console.log(this.filteredItems)
       }
-
-       
     })
   )
 
@@ -130,7 +108,7 @@ export class SidebarComponent implements OnInit {
 
   onClear() {
     this.filteredItems = this.loadedItems;
-    this.shownItems$$.next( this.filteredItems)
+    this.shownItems$$.next(this.filteredItems)
   }
 
 

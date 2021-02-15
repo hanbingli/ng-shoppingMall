@@ -1,25 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { AppModule } from 'src/app/app.module';
+import { HttpClientModule } from '@angular/common/http';
 import { ItemTileComponent } from './item-tile.component';
 
 describe('ItemTileComponent', () => {
-  let component: ItemTileComponent;
+  let comp: ItemTileComponent;
   let fixture: ComponentFixture<ItemTileComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ItemTileComponent ]
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ItemTileComponent ],
+      imports: [
+        AppModule, 
+
+      ], 
+
     })
     .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ItemTileComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    comp = fixture.componentInstance;
+    // fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(comp).toBeTruthy();
+  });
 });

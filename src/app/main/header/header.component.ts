@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onSearch(event: Event) {
+    this.filterService.clearSearch();
     const value = (event.target as HTMLInputElement).value;
 
     if (value.length === 0) {

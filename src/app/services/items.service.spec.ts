@@ -12,6 +12,15 @@ describe('ItemsService', () => {
   let itemsService: ItemsService; //create an instance of the ItemService
   let httpTestingController: HttpTestingController;
 
+  const mockReq = (mockData: any) => {
+    const req = httpTestingController.expectOne({
+      method: 'GET',
+      url: 'https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json',
+    });
+
+    req.flush(mockData);
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       // imports:[HttpClientTestingModule],   //产生mock implimentation
@@ -29,22 +38,21 @@ describe('ItemsService', () => {
     expect(itemsService).toBeTruthy();
   });
 
-  // it('should send request', () => {
-  //   itemsService.getItems()
-  //   const req = httpTestingController.expectOne('https://ng-shoppingmall-default-rtdb.firebaseio.com/items.json');
-  //   expect(req.request.method).toEqual("GET");
-  //   req.flush({})        //—?????????????????????????????????????????????????????????????????????????????
-  // })
-
-  // it('should get all items', () => {
-  //   itemsService.loadedItems$.subscribe(
-  //     items =>{
-  //       expect(items).toBeTruthy('No items returned');
-  //       expect(items.length).toBe(9)   //——————————————————————————————————————————————————————————
-
-  //     } )
   
-  // });
+describe('products', () => {
+   it('should get all items', (done: DoneFn) => {
+    itemsService.loadedItems$.subscribe(
+      items =>{
+        expect(items).toBeTruthy('No items returned');
+        expect(items.length).toBe(9)   //——————————————————————————————————————————————————————————
+
+      } )
+  
+  });
+
+})
+
+ 
 
 
 

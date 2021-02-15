@@ -26,19 +26,15 @@
     </div>
 
     <!-- <app-item-tile [item] = "item" *ngFor="let item of (loadedItems$ | async) "></app-item-tile> -->
+    <!-- <app-item-tile [item]="item"
+        *ngFor="let item of (shownItems$ | async)| searchFilter: (searchQuery$ | async): (searchField$ | async) | sort: [sortingField$, sortingOption$]">
+    </app-item-tile> -->
     <app-item-tile [item]="item" class="item-tile"
       *ngFor="let item of (shownItems$ | async) | sort: [sortingField$, sortingOption$]">
     </app-item-tile>
 
-    <!-- <app-item-tile [item]="item"
-    *ngFor="let item of (shownItems$ | async)| searchFilter: (searchQuery$ | async): (searchField$ | async) | sort: [sortingField$, sortingOption$]">
-  </app-item-tile> -->
-
-
-    <!-- {{loadedItems$ | async}} -->
     <h3 class="card-container" *ngIf="(shownItems$ | async).length === 0">
       No results found
-
     </h3>
 
   </mat-drawer-content>
