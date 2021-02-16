@@ -31,6 +31,17 @@ describe('FilterService', () => {
         })
     });
 
+    it('should update the search query', (done: DoneFn) => {
+      const mockSearchQuery = 'query';
+      service.setSearch(mockSearchQuery);
+
+      service.searchQuery$.subscribe(receivedQuery => {
+        expect(receivedQuery).toBe(mockSearchQuery);
+        done();
+      });
+    });
+
+
 
   })
 

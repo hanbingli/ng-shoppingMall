@@ -11,20 +11,32 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ItemsService } from 'src/app/services/items.service';
+import { FilterService } from 'src/app/services/filter.service';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let el : DebugElement;
   let itemsService: any; //will point to jasmine spy?????????
+  let filterService: any;
   let testItem:any;
   let getItemsSpy:any;
+
+  const filterServiceSpy = jasmine.createSpyObj('FilterService', [
+    'setSearch',
+    'clearAll',
+  ]);
+
+  const itemsServiceSpy = jasmine.createSpyObj('ItemsService', [
+    "getItems", 
+    "getCatagories", 
+    "setCatagory"]);
 
 
   beforeEach(async () => {
     testItem = 'test Item';
 
-    const itemsServiceSpy = jasmine.createSpyObj('ItemsService', ["getItems", "getCat", "setCat"]); //重建mock版本的service和使用的method
+    //重建mock版本的service和使用的method
     // getItemsSpy = itemsServiceSpy.getItems.and.returnValue( testItem );
 
 
@@ -35,7 +47,8 @@ describe('SidebarComponent', () => {
         NoopAnimationsModule
       ], 
       providers: [
-        {provide: ItemsService , useValue: itemsServiceSpy}
+        {provide: ItemsService , useValue: itemsServiceSpy},
+       {provide: FilterService, useValue: filterServiceSpy }
            
       ]
     })
@@ -45,7 +58,8 @@ describe('SidebarComponent', () => {
       component = fixture.componentInstance;
       // fixture.detectChanges();
       el =fixture.debugElement;
-      itemsService= TestBed.inject(ItemsService);
+      itemsService = TestBed.inject(ItemsService);
+      filterService = TestBed.inject(FilterService);
     })
   
    
@@ -55,31 +69,33 @@ describe('SidebarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('On init cats should be loaded', fakeAsync(() => {
+  it('On init cats should be loaded', () => {
     const mockCats: string[]=[
       'food', 
       'drink',
       'electronics',
       'health',
     ]
-    itemsService.getCat.and.returnValue(mockCats);
-    expect(itemsService.getCat()).toBe(mockCats, "itemsService returned cat")
-  }));
+    itemsService.getCatagories.and.returnValue(mockCats);
+    expect(itemsService.getCatagories()).toBe(mockCats, "itemsService returned cat")
+  });
+
   
   it('should call getItems once',  () => {
+    expect(itemsService.getItems).not.toHaveBeenCalled()
     component.ngOnInit();
-    expect(itemsService.getItems()).toHaveBeenCalled()//?????????????
+    expect(itemsService.getItems).toHaveBeenCalledTimes(1)
   })
 
-  it('should be empty string as search query by default', (done: DoneFn) => {
-    itemsService.searchQuery$.subscribe(
-      defaultSQuery =>{
-        expect(defaultSQuery).toBe('');
-        done();
-      })
-    });
 
 
+  // it('should trigger update of selectedCatagory$', () => {
+  //   // fixture.detectChanges()
+  //   const selectedCatagory = fixture.debugElement.query(By.css('catagories')).nativeElement;
+  //   selectedCatagory.triggerEventHandler('click', null);
+  //   // fixture.detectChanges()
+  //   expect(filterService.setCatagory).toHaveBeenCalled()
+  // });
 
 
 

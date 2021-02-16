@@ -11,7 +11,7 @@
     <mat-form-field class="searchfield">
       <span matPrefix><i class="fas fa-search"> </i></span>
       <input matInput #searchInput minlength="300" placeholder="Search" (keydown.enter)="onSearch($event)">
-      <mat-icon *ngIf="searchInput.value.length > 0" matSuffix (click)="clearInput()">close
+      <mat-icon class="clearSearch" *ngIf="searchInput.value.length > 0" matSuffix (click)="clearInput()">close
       </mat-icon>
     </mat-form-field>
   </div>

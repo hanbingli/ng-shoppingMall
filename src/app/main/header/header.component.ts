@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
 
       this.filterService.setSearch(value);
       console.log(value)
-      // this.clearInput()
+   
     }
   }
 
