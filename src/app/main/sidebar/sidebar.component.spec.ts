@@ -104,33 +104,6 @@ describe('SidebarComponent', () => {
 
 
 
-
-
-
-
-  // it('should display all tabs', () => {
-  //   pending()
-
-    // component.loadedCat = itemsService.getCat.and.returnValue();
-    // // fixture.detectChanges()
-    // // console.log(el.nativeElement.outerHTML);
-    // const cats = el.queryAll(By.css(".cat"));
-    // expect (cats).toBeTruthy("could not load cats")
-    // expect(cats.length).toBe(4, "Tab number not correct");
-
-
-    // component.loadedCat = itemsServiceSpy.getCat();
-
-    // fixture.detectChanges()
-    // console.log(el.nativeElement.outerHTML);
-    // const cats = el.queryAll(By.css(".cat"));
-    // expect(cats).toBeTruthy();
-    // expect (cats).toBeTruthy("could not load cards")
-    
-  // });
-
-
-
   // it('should display only selected tab when tab clicked', () => {
   //   pending()
  

@@ -82,6 +82,8 @@ describe('ItemTileComponent', () => {
     fixture.detectChanges()
     const addToCartButton = componentUiElements.getAddButton()
     addToCartButton.nativeElement.click()
+    // addToCartButton.nativeElement.triggerEventHandler('click', null);
+    // Why doesn't work with triggerEventHandler????
     fixture.detectChanges()
     expect(itemsService.addToCart).toHaveBeenCalled()
 

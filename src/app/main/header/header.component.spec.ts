@@ -52,15 +52,41 @@ describe('HeaderComponent', () => {
     expect(filterService.setSearch).toHaveBeenCalled()
   });
 
+    it('should hide delete-search button when there is no input', () => {
 
-  // it('should trigger clearSearch of searchQuery when close is clicked', () => {
-  //   fixture.detectChanges()
-  //   const closeButton = fixture.debugElement.query(By.css('mat-icon')).nativeElement;
-  //   closeButton.click()
-  //   fixture.detectChanges()
-  //   expect(filterService.clearSearch).toHaveBeenCalled()
-  // });
-  // ????????????????????????????????如何测试ngIf
+    const closeButton = fixture.debugElement.query(By.css('.clearSearch'));
+    
+    expect(closeButton).toBeNull();
+  });
+
+
+ 
+  it('should show delete-search button when there is no input', () => {
+    
+   
+    const input = fixture.debugElement.query(By.css('input'));
+    const value = 'trigger input event';
+    input.nativeElement.value = value;
+    fixture.detectChanges()
+    const closeButton = fixture.debugElement.query(By.css('.clearSearch'));
+    expect(closeButton).toBeTruthy();
+
+  });
+
+
+
+
+  it('should trigger clearSearch of searchQuery when close is clicked', () => {
+    const input = fixture.debugElement.query(By.css('input'));
+    const value = 'trigger input event';
+    input.nativeElement.value = value;
+    fixture.detectChanges()
+    const closeButton = fixture.debugElement.query(By.css('mat-icon')).nativeElement;
+    closeButton.click()
+    fixture.detectChanges()
+    expect(filterService.clearSearch).toHaveBeenCalled()
+  });
+
 
 
 

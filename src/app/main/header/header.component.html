@@ -18,6 +18,14 @@
 
   <span class="header-spacer"></span>
   <div class="header-function-buttons">
+    <div class="bb-brand-community">
+      <a
+        class="bb-brand-community-link"
+        href="https://community.backbase.com/"
+        target="_blank"
+        >Community</a
+      >
+    </div>
     <button mat-stroked-button routerLink="/auth" routerLinkActive="active" *ngIf="!isAuthenticated">Login</button>
     <button mat-stroked-button routerLink="/cart" routerLinkActive="active">
       <span [matBadge]="cartItemCount" matBadgeColor="accent" matBadgeOverlap="false">Cart</span>
