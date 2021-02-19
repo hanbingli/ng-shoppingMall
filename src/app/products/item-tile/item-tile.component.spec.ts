@@ -56,9 +56,7 @@ describe('ItemTileComponent', () => {
 
   });
 
-  // beforeEach(() => {
-   
-  // });
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -81,9 +79,8 @@ describe('ItemTileComponent', () => {
   it('should trigger addItem method of ItemService when AddToCart button is clicked', () => {
     fixture.detectChanges()
     const addToCartButton = componentUiElements.getAddButton()
-    addToCartButton.nativeElement.click()
-    // addToCartButton.nativeElement.triggerEventHandler('click', null);
-    // Why doesn't work with triggerEventHandler????
+    // addToCartButton.nativeElement.click()
+    addToCartButton.triggerEventHandler('click', null);
     fixture.detectChanges()
     expect(itemsService.addToCart).toHaveBeenCalled()
 

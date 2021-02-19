@@ -89,16 +89,19 @@ describe('SidebarComponent', () => {
 
 
 
-  // it('should trigger update of selectedCatagory$', () => {
-  //   // fixture.detectChanges()
-  //   const selectedCatagory = fixture.debugElement.query(By.css('catagories')).nativeElement;
-  //   selectedCatagory.triggerEventHandler('click', null);
-  //   // fixture.detectChanges()
-  //   expect(filterService.setCatagory).toHaveBeenCalled()
-  // });
+  // it('should trigger update of selectedCatagory$', fakeAsync(() => {
+  //   component.ngOnInit();
+  //   fixture.whenStable().then(() => {
+  //     fixture.detectChanges()
+  //     const catagories = fixture.debugElement.nativeElement.query(By.css('button.catagory'))
+  //     catagories[0].click()
+  //     fixture.detectChanges()
+  //     expect(filterService.setCatagory).toHaveBeenCalled()
 
+  //   })
 
-
+    
+  // }));
 
 });
 
@@ -119,43 +122,3 @@ describe('SidebarComponent', () => {
 
 
 
-
-
-
-
-
-
-
-
-  // it('should get items loaded', async() => {
-
-  //    component.loadedItems$
-    // fixture.detectChanges()
-    // console.log(el.nativeElement.outerHTML);
-    // const cards = el.queryAll(By.css(".item-tile"));
-    // expect (cards).toBeTruthy("could not load cards")
-
-   
-  // });
-
-  // it('should get catagories loaded', () => {
-   
-  // });
-
-
-  // it('should display the first tile', async() => {
-
-  //    component.loadedItems$
-    // fixture.detectChanges()
-
-    // const card = el.query(By.css(".item-tile::first-child")), 
-    // title=card.query(By.css("mat-card-title")
-    // expect (title).toBeTruthy("could not load card title")
-
-
-   
-  // });
-
-
-
-// });
