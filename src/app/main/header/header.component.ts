@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -6,13 +12,17 @@ import { AuthService } from '../../auth/auth.service';
 import { ItemsService } from '../../services/items.service';
 import { FilterService } from '../../services/filter.service';
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+}
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
-
 export class HeaderComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -25,15 +35,14 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private itemsService: ItemsService,
-    private filterService: FilterService,
-  ) { }
+    private filterService: FilterService
+  ) {}
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(user => {
+    this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !!user;
-
     });
-    this.cartSub = this.itemsService.itemCount$.subscribe(itemCount => {
+    this.cartSub = this.itemsService.itemCount$.subscribe((itemCount) => {
       this.cartItemCount = itemCount;
     });
   }
@@ -43,14 +52,19 @@ export class HeaderComponent implements OnInit {
     const value = (event.target as HTMLInputElement).value;
 
     if (value.length === 0) {
-
       this.clearInput();
-
     } else {
-
       this.filterService.setSearch(value);
-      console.log(value)
-   
+
+      (window as any).dataLayer.push({
+        searchInput: value,
+        searchCatagory: 'search',
+        // Input: value,
+        // event: 'searchInput',
+        // eventCategory: 'searchInput',
+        // eventAction: value,
+      });
+      console.log(window.dataLayer);
     }
   }
 
@@ -60,14 +74,10 @@ export class HeaderComponent implements OnInit {
   }
 
   onClearAll() {
-    this.filterService.clearAll()
+    this.filterService.clearAll();
   }
 
   onNewItem() {
-    this.router.navigate([
-      '/items/new'
-    ])
+    this.router.navigate(['/items/new']);
   }
-
-
 }

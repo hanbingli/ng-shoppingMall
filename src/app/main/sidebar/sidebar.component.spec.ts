@@ -1,7 +1,14 @@
-
-import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import {HttpClientModule} from '@angular/common/http';
+import {
+  TestBed,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { AppModule } from 'src/app/app.module';
 import { Item } from 'src/app/models/item.model';
 
@@ -16,11 +23,11 @@ import { FilterService } from 'src/app/services/filter.service';
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
-  let el : DebugElement;
+  let el: DebugElement;
   let itemsService: any; //will point to jasmine spy?????????
   let filterService: any;
-  let testItem:any;
-  let getItemsSpy:any;
+  let testItem: any;
+  let getItemsSpy: any;
 
   const filterServiceSpy = jasmine.createSpyObj('FilterService', [
     'setSearch',
@@ -28,10 +35,10 @@ describe('SidebarComponent', () => {
   ]);
 
   const itemsServiceSpy = jasmine.createSpyObj('ItemsService', [
-    "getItems", 
-    "getCatagories", 
-    "setCatagory"]);
-
+    'getItems',
+    'getCatagories',
+    'setCatagory',
+  ]);
 
   beforeEach(async () => {
     testItem = 'test Item';
@@ -39,30 +46,23 @@ describe('SidebarComponent', () => {
     //重建mock版本的service和使用的method
     // getItemsSpy = itemsServiceSpy.getItems.and.returnValue( testItem );
 
-
     await TestBed.configureTestingModule({
-      declarations: [ SidebarComponent ],
-      imports: [
-        AppModule, 
-        NoopAnimationsModule
-      ], 
+      declarations: [SidebarComponent],
+      imports: [AppModule, NoopAnimationsModule],
       providers: [
-        {provide: ItemsService , useValue: itemsServiceSpy},
-       {provide: FilterService, useValue: filterServiceSpy }
-           
-      ]
+        { provide: ItemsService, useValue: itemsServiceSpy },
+        { provide: FilterService, useValue: filterServiceSpy },
+      ],
     })
-    .compileComponents()
-    .then(() =>{
-      fixture = TestBed.createComponent(SidebarComponent);
-      component = fixture.componentInstance;
-      // fixture.detectChanges();
-      el =fixture.debugElement;
-      itemsService = TestBed.inject(ItemsService);
-      filterService = TestBed.inject(FilterService);
-    })
-  
-   
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(SidebarComponent);
+        component = fixture.componentInstance;
+        // fixture.detectChanges();
+        el = fixture.debugElement;
+        itemsService = TestBed.inject(ItemsService);
+        filterService = TestBed.inject(FilterService);
+      });
   });
 
   it('should create sidebar Component', () => {
@@ -70,24 +70,28 @@ describe('SidebarComponent', () => {
   });
 
   it('On init cats should be loaded', () => {
-    const mockCats: string[]=[
-      'food', 
-      'drink',
-      'electronics',
-      'health',
-    ]
+    const mockCats: string[] = ['food', 'drink', 'electronics', 'health'];
     itemsService.getCatagories.and.returnValue(mockCats);
-    expect(itemsService.getCatagories()).toBe(mockCats, "itemsService returned cat")
+    expect(itemsService.getCatagories()).toBe(
+      mockCats,
+      'itemsService returned cat'
+    );
   });
 
-  
-  it('should call getItems once',  () => {
-    expect(itemsService.getItems).not.toHaveBeenCalled()
+  it('should call getItems once', () => {
+    expect(itemsService.getItems).not.toHaveBeenCalled();
     component.ngOnInit();
-    expect(itemsService.getItems).toHaveBeenCalledTimes(1)
-  })
+    expect(itemsService.getItems).toHaveBeenCalledTimes(1);
+  });
 
+  // it('should trigger update of selectedCatagory$', done  => {
 
+  //   this.instance.filteredItems$
+  //       .subscribe((Item[]: DoneFn) => {
+
+  //       })
+
+  // })
 
   // it('should trigger update of selectedCatagory$', fakeAsync(() => {
   //   component.ngOnInit();
@@ -100,25 +104,15 @@ describe('SidebarComponent', () => {
 
   //   })
 
-    
   // }));
-
 });
 
+// it('should display only selected tab when tab clicked', () => {
+//   pending()
 
+// });
 
-  // it('should display only selected tab when tab clicked', () => {
-  //   pending()
- 
-    
-  // });
+// it('should display only searched items when search issued', () => {
+//   pending()
 
-
-  // it('should display only searched items when search issued', () => {
-  //   pending()
- 
-    
-  // });
-
-
-
+// });
